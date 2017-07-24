@@ -12,7 +12,6 @@ type Config struct {
 	MaxAttempts   int
 	Prival        string
 	Procid        string
-	Hostname      string
 	Appname       string
 	Msgid         string
 	Host          string
@@ -24,6 +23,7 @@ type Config struct {
 // NewConnection -
 func NewConnection(host string, port string, dbname string) (string, error) {
 
+	//because we’re not copying the whole Config struct, the amount of data being copied is reduced.
 	newConnection := host + port + dbname
 
 	return newConnection, nil
