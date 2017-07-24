@@ -30,3 +30,18 @@ type SomeModel struct {
 type AnoterStruct struct {
 	id int
 }
+
+// makeGenerationCalls - Test calls
+func makeBetterPointerCalls() bool {
+
+	incomingRequest := SomeModel{}
+
+	// no need to check for nil because its defaulted to 0
+
+	// do something with an int
+
+	if incomingRequest.ID1 > 1 {
+		return true
+	}
+	return false
+}

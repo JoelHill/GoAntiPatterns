@@ -14,3 +14,7 @@ func RandomString(n int) (string, error) {
 func Cert(hostname string) (string, string, error) {
 	return "", "", nil
 }
+
+// The name "generate" conveys the purpose of the package.
+
+// The function names specify the what.

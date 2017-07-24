@@ -6,7 +6,7 @@ import (
 )
 
 func something() error {
-	return fmt.Errorf("something error")
+	return fmt.Errorf("a bad error")
 }
 
 // SmallThing -

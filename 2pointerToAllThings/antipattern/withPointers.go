@@ -24,3 +24,17 @@ type SomeModel struct {
 type AnoterStruct struct {
 	id *int
 }
+
+// makeAntiPatternUtilCalls - Test calls
+func makeAntiPatternPointerCalls() bool {
+
+	incomingRequest := SomeModel{}
+
+	// if not nil checked, could throw null pointer error.
+	if incomingRequest.ID1 != nil && *incomingRequest.ID1 > 1 {
+
+		// do something with an int
+		return true
+	}
+	return false
+}
