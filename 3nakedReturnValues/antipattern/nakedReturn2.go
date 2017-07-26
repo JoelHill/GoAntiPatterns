@@ -14,6 +14,7 @@ func SmallThing(b int) (n int, err error) {
 	n = rand.Intn(b)
 
 	if err := something(); err != nil {
+		// this line you will see "a bad error"
 		fmt.Println("something() Err:", err)
 		// return n, err
 	}
@@ -23,6 +24,7 @@ func SmallThing(b int) (n int, err error) {
 
 func main() {
 	_, err := SmallThing(10)
-	// If you expect to get the error from "something" function returned to main, you would be mistaken.
+	// You expect -> main err: a bad error. But you would be mistaken.
+	// The output -> main err: <nil>
 	fmt.Println("main err:", err)
 }
