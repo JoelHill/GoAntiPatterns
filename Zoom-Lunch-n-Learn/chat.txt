@@ -1,0 +1,79 @@
+12:03:34	 From Ben Nadel : woot woot!
+12:03:54	 From Joshua Siok : Captain Divider
+12:03:58	 From Peter Gulyas : Been here longer then me!
+12:05:49	 From Ben Nadel : NOOOOOOO
+12:05:52	 From Max Nunes : https://github.com/alecthomas/gometalinter
+12:08:39	 From Ted Eiles : util/manager/helper … applies to node.js, Java, etc…
+12:12:34	 From Daniel Selans : I have a feeling I'm going to take the misc/util/helper anti-pattern to the grave :|
+12:13:21	 From Jeff Hubbard : same, as a team we’ve concreted certain funcs to always be util/misc so segmenting them out and having 5 packages (each with like 2 funcs a piece) is just work
+12:13:33	 From Jeff Hubbard : and possible pkg creep
+12:14:46	 From Jeff Hubbard : naked returns are talked about in a tour of go: https://tour.golang.org/basics/7
+12:16:04	 From mnichols : 100% agree on duplication in tests. Don't Make Me Think.
+12:17:13	 From mnichols : The "deps" pattern I've been seeing around seems to be similar to the config antipattern
+12:18:34	 From Jeff Hubbard : deps is lazy dependency injection and we usually use it to avoid import cycles
+12:19:07	 From Ben Nadel : i love returning early
+12:20:09	 From mnichols : Yeah I saw it was a kind of service locator
+12:21:11	 From Jeff Hubbard : sort of, it’s an explicit injector that allows us to declare singleton clients (for instance to external services) that we’d not want to re-instantiate every time
+12:21:45	 From Jeff Hubbard : easier to just set up dependencies and attach them to an API struct than constantly pass around config params and re-init conns/clients as needed
+12:23:12	 From Ted Eiles : Are there any uniquely go-lang anti-patterns?
+12:23:24	 From Daniel Selans : A nitpick: I personally dislike goimports; I prefer to order my imports in a specific way to make it easier to digest.
+12:23:46	 From mnichols : yeah service locator is still a pull model though, not a DI container (which I miss). So far we've preferred doing stuff with https://golang.org/pkg/sync/#Once instead.
+12:25:17	 From Boaz Ruck : https://stackoverflow.com/questions/23542989/pointers-vs-values-in-parameters-and-return-values
+12:26:09	 From mnichols : I still disagree with the notion of returning pointers unless it is just dumb DTO. Interfaces scale. :)
+12:29:58	 From kevinhankens : https://medium.com/@nate510/don-t-use-go-s-default-http-client-4804cb19f779
+12:30:41	 From Max Nunes : Isn’t the “I” prefix for interfaces a anti pattern too?
+12:31:22	 From Jeff Hubbard : the go convention is "er"
+12:31:30	 From Jeff Hubbard : we find it limiting
+12:31:37	 From Ted Eiles : TeamServicer
+12:31:37	 From Ted Eiles : ?
+12:31:51	 From Max Nunes : https://golang.org/doc/effective_go.html#interface-names
+12:34:15	 From Eric Betts : I think I misunderstood what was being referenced in the golang standard library.  If they're following their own best practices, that seems like a great reference
+12:35:00	 From Daniel Selans : I think this is going into the realm of purity. Yes, it makes sense to have an interface that does one thing well, but the reality is that writing tests for a package that utilizes 10 different interfaces is unnecessarily difficult.
+12:35:20	 From mnichols : that's why you might implement a rollup interface...like io.ReadCloser
+12:38:53	 From Daniel Selans : I haven't implemented anything using that pattern before - my immediate feel is that you create additional abstractions and it'll be more difficult to traverse the code base.
+12:39:07	 From Daniel Selans : But yes, @mnichols - you could do that, you're right
+12:39:56	 From mnichols : We've found it very helpful at scaling as requirements have changed and we've had to swap out underlying implementations . Tests avoid being brittle as a result too
+12:40:08	 From Jesse Dearing : FWIW, that’s how mocks are implemented in all the staticly typed languages I’ve used
+12:40:41	 From Jeff Hubbard : generally in OO languages you can mock entire objects
+12:40:50	 From Jeff Hubbard : go has no concept of objects so it muddies the water
+12:42:51	 From Daniel Selans : "Don't test the driver"
+12:43:00	 From Daniel Selans : I consider that an anti-pattern
+12:43:16	 From mnichols : I agree Mr.Selans.
+12:43:19	 From Daniel Selans : :)
+12:43:22	 From Ted Eiles : For example, faking a http connection.  I wish I had https://github.com/maxcnunes/httpfake
+12:43:45	 From Max Nunes : :)
+12:44:31	 From Scott Rippey : In Node, there's `nock` for mocking all http, and it's totally awesome for "testing the driver"!
+12:45:05	 From Jesse Dearing : Engineering note on testing: https://invision-engineering.herokuapp.com/requirements/REQ023/index.html
+12:45:11	 From Daniel Selans : Oh potential anti-pattern (that I haven't seen used here, but it's worth a mention): do not do exception based logic via panic/recover.
+12:45:22	 From Daniel Selans : via defer/recover rather
+12:45:33	 From Max Nunes : There gock in Go
+12:45:39	 From Daniel Selans : (even if it's doable)
+12:45:48	 From Boaz Ruck : Also don’t use context to pass anything that should be explicitly declared in a function.
+12:45:56	 From Boaz Ruck : maybe I missed that?
+12:46:36	 From Jeff Hubbard : oh
+12:46:43	 From Jeff Hubbard : before we totally abandon the mocking/testing conversation
+12:46:54	 From Jeff Hubbard : https://github.com/relistan/go-director
+12:47:01	 From Daniel Selans : ^^^ YES.
+12:47:03	 From Jeff Hubbard : ^ can’t recommend that lib enough for unit testing goroutines
+12:47:12	 From Jeff Hubbard : we use it everywhere
+12:47:17	 From Daniel Selans : testing goroutines that do `for {}`'s
+12:48:28	 From mnichols : func TeamCreator { MyFunc() }
+12:48:49	 From mnichols : func TransactionalTeamCreator { TeamCreator }
+12:50:28	 From Daniel Selans : I think that's a solid approach
+12:51:53	 From Ted Eiles : Without distribution/ACID transactions, the design is on the path to eventual consistency and http://www.reactivemanifesto.org/
+12:52:48	 From Ben Nadel : Looper was a pretty good movie.
+12:53:22	 From mnichols : Thanks for leading the talk Joel
+12:53:28	 From Boaz Ruck : https://play.golang.org/p/FJW1_CuRCD
+12:56:12	 From mnichols : +1 Ben
+12:56:19	 From Ben Darfler : +100
+12:56:33	 From Jeff Hubbard : we use cfg struct
+12:56:36	 From Jeff Hubbard : and pass that beast around everywhere
+12:56:38	 From mnichols : doit(_.extend({},args)) // whatever that is
+12:56:39	 From Jeff Hubbard : #hate
+12:56:42	 From Max Nunes : Thanks!!
+12:56:47	 From Daniel Selans : lol
+12:56:50	 From Ben Nadel : awesome stuff
+12:56:52	 From Bob Uva : Very helpful!
+12:56:55	 From Daniel Selans : See ya, thanks for setting this up
+12:56:55	 From David Epler : thanks
+12:56:58	 From Ted Eiles : Thanks
